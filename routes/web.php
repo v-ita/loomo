@@ -16,4 +16,10 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
-})->middleware(['auth', 'verified'])->name('welcome');
+})->name('home');
+
+Route::get('/login', function () {
+    return Inertia::render('Welcome');
+})->name('login');
+
+require __DIR__ . '/auth.php';
