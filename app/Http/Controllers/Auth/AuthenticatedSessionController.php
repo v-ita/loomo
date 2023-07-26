@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,4 +26,15 @@ class AuthenticatedSessionController extends Controller
 
         return redirect()->route(RouteServiceProvider::HOME);
     }
+
+    public function destroy(Request $request)
+	{
+		Auth::guard('web')->logout();
+
+		$request->session()->invalidate();
+
+		$request->session()->regenerateToken();
+
+		return redirect()->route(RouteServiceProvider::HOME);
+	}
 }
