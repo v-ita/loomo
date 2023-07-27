@@ -23,3 +23,4 @@ Route::get('/login', function () {
 })->name('login');
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/product.php';
