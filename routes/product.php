@@ -6,4 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(ProductController::class)->middleware('auth')->name('products.')->group(function () {
 	Route::get('/products/create', 'create')->name('create');
 	Route::post('/products', 'store')->name('store');
+
+	Route::get('/products/{product}/edit', 'edit')->name('edit');
+	Route::put('/products/{product}', 'update')->name('update');
 });

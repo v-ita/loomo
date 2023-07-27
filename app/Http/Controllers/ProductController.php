@@ -55,7 +55,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('Product/Edit', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -63,7 +65,18 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $validated = $request->validated();
+
+        # remove required fields which are null in the validated data but it should not be null
+		$validated =  array_filter($validated, function ($value, $key) {
+			if ($key == 'name' || $key == 'slug') {
+				return !(is_null($value) || empty($value));
+			}
+			return true;
+		}, ARRAY_FILTER_USE_BOTH);
+        
+        $product->update($validated);
+        return redirect()->route(RouteServiceProvider::HOME);
     }
 
     /**
