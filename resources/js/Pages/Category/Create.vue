@@ -6,15 +6,13 @@ const props = defineProps({
 })
 
 const form = useForm({
-    category_id: '',
     name: '',
     slug: '',
-    description: '',
-    quantity_stock: '',
+    parent_id: ''
 });
 
 const submit = () => {
-    form.post(route('products.store'));
+    form.post(route('categories.store'));
 };
 </script>
 
@@ -23,11 +21,7 @@ const submit = () => {
         <form @submit.prevent="submit">
             <input type="text" v-model="form.name" name="name" id="name" placeholder="Name" required><br>
             <input type="text" v-model="form.slug" name="slug" id="slug" placeholder="Slug"><br>
-            <textarea name="description" v-model="form.description" id="description" cols="30" rows="10"
-                placeholder="Description"></textarea><br>
-            <input type="number" v-model="form.quantity_stock" name="quantity_stock" id="quantity_stock"
-                placeholder="Quantity stock" min="0"><br>
-            <select id="category_id" v-model="form.category_id" v-if="categories.length">
+            <select id="parent_id" v-model="form.parent_id" v-if="categories.length">
                 <option :value="null" selected>
                     --- Select an option ---
                 </option>

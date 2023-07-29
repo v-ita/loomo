@@ -3,9 +3,11 @@ import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     product: Object,
+    categories: Object,
 })
 
 const form = useForm({
+    category_id: props.product.category_id,
     name: props.product.name,
     slug: props.product.slug,
     description: props.product.description,
@@ -26,6 +28,12 @@ const submit = () => {
                 placeholder="Description"></textarea><br>
             <input type="number" v-model="form.quantity_stock" name="quantity_stock" id="quantity_stock"
                 placeholder="Quantity stock" min="0"><br>
+            <select id="category_id" v-model="form.category_id" v-if="categories.length">
+                <option :value="null" selected>
+                    --- Select an option ---
+                </option>
+                <option v-for="category in categories" :key="category.id" :value="category.id" v-text="category.name" />
+            </select><br>
             <button :disabled="form.processing" type="submit">Submit</button>
         </form>
     </div>

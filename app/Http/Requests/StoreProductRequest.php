@@ -30,6 +30,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'category_id' => ['nullable', 'integer', 'exists:App\Models\Category,id'],
             'name' => ['bail', 'string', 'required', 'max:255'],
             'slug' => ['bail', 'string', 'required', 'max:255', 'unique:products'],
             'description' => ['nullable', 'string'],
