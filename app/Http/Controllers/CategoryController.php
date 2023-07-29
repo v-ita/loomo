@@ -58,7 +58,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return Inertia::render('Category/Edit', [
+            'categories' => Category::all()->except($category->id),
+            'category' => $category
+        ]);
     }
 
     /**
@@ -66,7 +69,25 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validated = $request->validated();
+        
+        # remove required fields which are null in the validated data but it should not be null
+        $validated =  array_filter($validated, function ($value, $key) {
+            if ($key == 'name' || $key == 'slug') {
+                return !(is_null($value) || empty($value));
+            }
+            return true;
+        }, ARRAY_FILTER_USE_BOTH);
+
+        if (isset($validated['parent_id'])) {
+			$parent = Category::find($validated['parent_id']);
+			$category->parent()->associate($parent);
+		}else{
+            $category->parent()->disassociate();
+        }
+
+		$category->update($validated);
+		return redirect()->route(RouteServiceProvider::HOME);
     }
 
     /**
