@@ -6,6 +6,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Inertia\Inertia;
@@ -26,7 +27,8 @@ class ProductController extends Controller
     public function create()
     {
         return Inertia::render('Product/Create', [
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'stores' => Store::all()
         ]);
     }
 
@@ -43,6 +45,11 @@ class ProductController extends Controller
         if (isset($validated['category_id'])) {
             $category = Category::find($validated['category_id']);
             $product->category()->associate($category);
+        }
+
+        if (isset($validated['store_id'])) {
+            $store = Store::find($validated['store_id']);
+            $product->store()->associate($store);
         }
 
         $user->products()->save($product);
@@ -65,7 +72,8 @@ class ProductController extends Controller
     {
         return Inertia::render('Product/Edit', [
             'product' => $product,
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'stores' => Store::all()
         ]);
     }
 
@@ -89,6 +97,13 @@ class ProductController extends Controller
             $product->category()->associate($category);
         }else{
             $product->category()->disassociate();
+        }
+
+        if (isset($validated['store_id'])) {
+            $store = Store::find($validated['store_id']);
+            $product->store()->associate($store);
+        }else{
+            $product->store()->disassociate();
         }
 
         $product->update($validated);

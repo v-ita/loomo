@@ -26,3 +26,4 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/product.php';
 require __DIR__ . '/cart_item.php';
 require __DIR__ . '/category.php';
+require __DIR__ . '/store.php';
