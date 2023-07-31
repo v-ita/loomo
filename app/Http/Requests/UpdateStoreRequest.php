@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class UpdateStoreRequest extends FormRequest
 {
@@ -11,8 +12,15 @@ class UpdateStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
+
+    protected function prepareForValidation()
+	{
+		$this->merge([
+			'slug' => Str::slug($this->input('slug'))
+		]);
+	}
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +30,8 @@ class UpdateStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['nullable', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:stores,slug,' . $this->route('store')->id],
         ];
     }
 }

@@ -54,7 +54,9 @@ class StoreController extends Controller
      */
     public function edit(Store $store)
     {
-        //
+        return Inertia::render('Store/Edit', [
+            'store' => $store
+        ]);
     }
 
     /**
@@ -62,7 +64,18 @@ class StoreController extends Controller
      */
     public function update(UpdateStoreRequest $request, Store $store)
     {
-        //
+        $validated = $request->validated();
+
+        # remove required fields which are null in the validated data but it should not be null
+        $validated =  array_filter($validated, function ($value, $key) {
+            if ($key == 'name' || $key == 'slug') {
+                return !(is_null($value) || empty($value));
+            }
+            return true;
+        }, ARRAY_FILTER_USE_BOTH);
+
+        $store->update($validated);
+        return redirect()->route(RouteServiceProvider::HOME);
     }
 
     /**
