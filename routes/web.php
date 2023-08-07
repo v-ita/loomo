@@ -28,3 +28,4 @@ require __DIR__ . '/cart_item.php';
 require __DIR__ . '/category.php';
 require __DIR__ . '/store.php';
 require __DIR__ . '/language.php';
+require __DIR__ . '/role.php';
